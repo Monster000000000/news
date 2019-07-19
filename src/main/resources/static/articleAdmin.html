@@ -105,7 +105,9 @@
                             <label><i-button v-on:click="vagueSelect" type="info" style="width:300px; background: #8ce6b0; color: black">点我查询</i-button></label>
                         </div>
                         <br>
-                        <i-button type="primary" @click="modal1 = true">添加文章信息</i-button>
+                        <div>
+                            <i-button type="primary" @click="modal1 = true">添加文章信息</i-button>
+                        </div>
                         <Modal v-model="modal1" title="文章信息添加"
                                @on-ok="add" @on-cancel="cancel"
                                :draggable="true">

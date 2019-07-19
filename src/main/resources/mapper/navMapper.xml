@@ -4,7 +4,7 @@
 <mapper namespace="com.tre.dao.NavMapper">
 
     <select id="selectAllNav" resultType="com.tre.entity.Nav">
-        select * from nav
+        select * from nav order by nav_feight ASC
     </select>
     <select id="selectNavByName" resultType="com.tre.entity.Nav">
         select * from nav where nav_name=#{nav_name}
