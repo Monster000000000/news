@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tre.dao.LoginMapper">
+
+    <select id="selectByMid" resultType="com.tre.entity.Manager">
+        select * from manager where manager_name=#{manager_name}
+    </select>
+
+</mapper>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>系统首页</title><script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/iview/dist/styles/iview.css">
+    <script src="https://unpkg.com/iview/dist/iview.min.js"></script>
+</head>
+<body>
+<style scoped>
+    .layout{
+        border: 1px solid #d7dde4;
+        background: #f5f7f9;
+        position: relative;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    .layout-logo{
+        width: 100px;
+        height: 30px;
+        background: #5b6270;
+        border-radius: 3px;
+        float: left;
+        position: relative;
+        top: 15px;
+        left: 20px;
+        background: url("image/tt.gif")no-repeat center;
+        background-size: 80px;
+    }
+    .layout-nav{
+        width: 270px;
+        margin: 0 auto;
+        margin-right: 20px;
+        float: right;
+    }
+    .layout-nav1{
+        width: 600px;
+        margin: 0 auto;
+        margin-right: 20px;
+        float: left;
+    }
+    .layout-footer-center{
+        text-align: center;
+    }
+    #reset {
+        display: none;
+        position: absolute;
+    }
+    #delete {
+        display: none;
+        position: absolute;
+    }
+    form fieldset{
+        border:0;
+        text-align: left;
+    }
+    label{
+        display: inline-block;
+        width: 100px;
+        text-align: right;
+        line-height: 100%;
+    }
+    i-input{
+        width: 100px;
+    }
+</style>
+<div id="app">
+    <Layout>
+        <i-Header>
+            <i-Menu mode="horizontal" theme="dark" active-name="1">
+                <div class="layout-logo" ></div>
+                <div class="layout-nav1">
+                    <Menu-Item name="1">
+                        <h1 style="color: #dff0d8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新闻发布管理系统</h1>
+                    </Menu-Item>
+                </div>
+            </i-Menu>
+        </i-Header>
+        <Layout :style="{padding: '0 50px'}">
+            <Breadcrumb :style="{margin: '16px 0'}">
+                <Breadcrumb-Item>新闻发布管理系统</Breadcrumb-Item>
+                <Breadcrumb-Item>index</Breadcrumb-Item>
+                <Breadcrumb-Item>index</Breadcrumb-Item>
+            </Breadcrumb>
+            <i-Content :style="{padding: '24px 0', minHeight: '750px', background: '#fff'}">
+                <Layout>
+                    <Sider hide-trigger :style="{background: '#fff'}">
+                        <i-Menu active-name="choose1" theme="light" width="auto" @on-select="choose">
+                            <Menu-Item name="1-1" to="userAdmin.html"><Icon type="ios-keypad"></Icon>用户管理</Menu-Item>
+                            <Menu-Item name="1-2" to="navAdmin.html"><Icon type="ios-keypad"></Icon>类别管理</Menu-Item>
+                            <Menu-Item name="1-3" to="articleAdmin.html"><Icon type="ios-keypad"></Icon>文章管理</Menu-Item>
+                            <!--<Menu-Item name="1-4" onclick="clearCookies1"><Icon type="ios-keypad"></Icon>退出系统</Menu-Item>-->
+                            <Menu-Item name="1-4">
+                                <Icon type="ios-keypad"></Icon><a href="index.html" v-on:click="clearCookies">退出系统</a>
+                            </Menu-Item>
+                        </i-Menu>
+                    </Sider>
+                    <i-Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
+                        <div style="text-align: center">
+                            <h1>欢迎登录</h1>
+                            <h1>新闻发布管理系统</h1>
+                        </div>
+                    </i-Content>
+                </Layout>
+            </i-Content>
+        </Layout>
+        <i-Footer class="layout-footer-center">@你，是医我的药</i-Footer>
+    </Layout>
+</div>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            choose1:'',
+            choose:''
+        },
+        methods: {
+            clearCookies: function(){
+                var that=this;
+                axios.post("/clearCookies")
+                    .then(function (response) {
+                        if (response.data == true){
+                            alert("清除session信息，点击确定，返回首页")
+                        } else{
+                            alert("清除session失败")
+                        }
+                    })
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/iview/dist/styles/iview.css">
+    <script src="https://unpkg.com/iview/dist/iview.min.js"></script>
+</head>
+<body>
+<style scoped>
+    .layout{
+        border: 1px solid #d7dde4;
+        background: #f5f7f9;
+        position: relative;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    .layout-logo{
+        width: 100px;
+        height: 30px;
+        background: #5b6270;
+        border-radius: 3px;
+        float: left;
+        position: relative;
+        top: 15px;
+        left: 20px;
+        background: url("image/tt.gif")no-repeat center;
+        background-size: 80px;
+    }
+    .layout-nav{
+        width: 270px;
+        margin: 0 auto;
+        margin-right: 20px;
+        float: right;
+    }
+    .layout-nav1{
+        width: 600px;
+        margin: 0 auto;
+        margin-right: 20px;
+        float: left;
+    }
+    .layout-footer-center{
+        text-align: center;
+    }
+    #reset {
+        display: none;
+        position: absolute;
+    }
+    #delete {
+        display: none;
+        position: absolute;
+    }
+    form fieldset{
+        border:0;
+        text-align: left;
+    }
+    label{
+        display: inline-block;
+        width: 100px;
+        text-align: right;
+        line-height: 100%;
+    }
+    i-input{
+        width: 100px;
+    }
+</style>
+<div id="app">
+    <Layout>
+        <i-Header>
+            <i-Menu mode="horizontal" theme="dark" active-name="1">
+                <div class="layout-logo" ></div>
+                <div class="layout-nav1">
+                    <Menu-Item name="1">
+                        <h1 style="color: #dff0d8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新闻发布管理系统</h1>
+                    </Menu-Item>
+                </div>
+            </i-Menu>
+        </i-Header>
+        <Layout :style="{padding: '0 50px'}">
+            <Breadcrumb :style="{margin: '16px 0'}">
+                <Breadcrumb-Item>新闻发布管理系统</Breadcrumb-Item>
+                <Breadcrumb-Item>userAdmin</Breadcrumb-Item>
+                <Breadcrumb-Item>userAdmin</Breadcrumb-Item>
+            </Breadcrumb>
+            <i-Content :style="{padding: '24px 0', minHeight: '750px', background: '#fff'}">
+                <Layout>
+                    <Sider hide-trigger :style="{background: '#fff'}">
+                        <i-Menu active-name="choose1" theme="light" width="auto" @on-select="choose">
+                            <Menu-Item name="1-1" to="userAdmin.html"><Icon type="ios-keypad"></Icon>用户管理</Menu-Item>
+                            <Menu-Item name="1-2" to="navAdmin.html"><Icon type="ios-keypad"></Icon>类别管理</Menu-Item>
+                            <Menu-Item name="1-3" to="articleAdmin.html"><Icon type="ios-keypad"></Icon>文章管理</Menu-Item>
+                            <Menu-Item name="1-4">
+                                <Icon type="ios-keypad"></Icon><a href="index.html" v-on:click="clearCookies">退出系统</a>
+                            </Menu-Item>
+                        </i-Menu>
+                    </Sider>
+
+                    <i-Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
+
+                        <i-button type="primary" @click="modal1 = true">添加用户信息</i-button>
+                        <Modal v-model="modal1" title="用户信息添加"
+                               @on-ok="add" @on-cancel="cancel"
+                               :draggable="true">
+                            <form>
+                                <fieldset>
+                                    <label>用户ID:</label>
+                                    <i-input type="text" v-model="manager_id" clearable style="width: 200px"/>
+                                </fieldset><br>
+                                <fieldset>
+                                    <label>帐号:</label>
+                                    <i-input type="text" v-model="manager_name" clearable style="width: 200px"/>
+                                </fieldset><br>
+                                <fieldset>
+                                    <label>用户密码:</label>
+                                    <i-input type="text" v-model="manager_pwd" clearable style="width: 200px"/>
+                                </fieldset><br>
+                            </form>
+                        </Modal>
+                        <Modal v-model="modal2" title="用户信息修改"
+                               @on-ok="update" @on-cancel="cancel"
+                               :draggable="true">
+                            <form>
+                                <fieldset>
+                                    <label>用户ID:</label>
+                                    <i-input type="text" v-model="manager_id" clearable disabled style="width: 200px"/>
+                                </fieldset><br>
+                                <fieldset>
+                                    <label>帐号:</label>
+                                    <i-input type="text" v-model="manager_name" clearable style="width: 200px"/>
+                                </fieldset><br>
+                                <fieldset>
+                                    <label>用户密码:</label>
+                                    <i-input type="text" v-model="manager_pwd" clearable style="width: 200px"/>
+                                </fieldset><br>
+                            </form>
+                        </Modal>
+                        <Modal v-model="modal3" title="密码重置"
+                               @on-ok="reset1" @on-cancel="cancel"
+                               :draggable="true">
+                            <form id="reset">
+                                <fieldset>
+                                    <label>用户ID:</label>
+                                    <i-input type="text" v-model="manager_id" clearable style="width: 200px"/>
+                                </fieldset><br>
+                                <fieldset>
+                                    <label>帐号:</label>
+                                    <i-input type="text" v-model="manager_name" clearable style="width: 200px"/>
+                                </fieldset><br>
+                                <fieldset>
+                                    <label>用户密码:</label>
+                                    <i-input type="text" v-model="manager_pwd" clearable style="width: 200px"/>
+                                </fieldset><br>
+                            </form>
+                            <h1>确认重置密码(123)？</h1>
+                        </Modal>
+                        <Modal v-model="modal4" title="删除确认"
+                               @on-ok="delete1" @on-cancel="cancel"
+                               :draggable="true">
+                            <form id="delete">
+                                <fieldset>
+                                    <label>用户ID:</label>
+                                    <i-input type="text" v-model="manager_id" clearable style="width: 200px"/>
+                                </fieldset><br>
+                                <fieldset>
+                                    <label>帐号:</label>
+                                    <i-input type="text" v-model="manager_name" clearable style="width: 200px"/>
+                                </fieldset><br>
+                                <fieldset>
+                                    <label>用户密码:</label>
+                                    <i-input type="text" v-model="manager_pwd" clearable style="width: 200px"/>
+                                </fieldset><br>
+                            </form>
+                            <h1>确认删除这条数据？</h1>
+                        </Modal>
+                        <i-table border :columns="maColumns" :data="managers"></i-table>
+                    </i-Content>
+                </Layout>
+            </i-Content>
+        </Layout>
+        <i-Footer class="layout-footer-center">@你，是医我的药</i-Footer>
+    </Layout>
+</div>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            modal1: false,
+            modal2: false,
+            modal3: false,
+            modal4: false,
+            flage: false,
+            choose1:'',
+            manager_id: '',
+            manager_name: '',
+            manager_pwd: '',
+            picked: '',
+            index: '',
+            index1:'',
+            visible: false,
+            managers: [],
+            maColumns: [
+                {
+                    title: '用户ID',
+                    key: 'manager_id'
+                },
+                {
+                    title: '帐号',
+                    key: 'manager_name'
+                },
+                {
+                    title: '用户密码',
+                    key: 'manager_pwd'
+                },
+                {
+                    title: '操作',
+                    key: 'operation',
+                    render: function (h, params) {
+                        return h('div', [
+                            h('Button', {
+                                props: {
+                                    type: 'primary',
+                                    size: 'small'
+                                },
+                                style: {
+                                    marginRight: '5px'
+                                },
+                                on: {
+                                    click: function() {
+                                        app.select(params.index)
+                                    }
+                                }
+                            }, '修改'),
+                            h('Button', {
+                                props: {
+                                    type: 'warning',
+                                    size: 'small'
+                                },
+                                style: {
+                                    marginRight: '5px'
+                                },
+                                on: {
+                                    click: function() {
+                                        app.reset(params.index)
+                                    }
+                                }
+                            }, '重置密码'),
+                            h('Button', {
+                                props: {
+                                    type: 'error',
+                                    size: 'small'
+                                },
+                                on: {
+                                    click: function() {
+                                        app.delete(params.index)
+                                    }
+                                }
+                            }, '删除')
+                        ]);
+                    }
+                }
+            ]
+        },
+        methods: {
+            choose:function (val) {
+                this.choose1=val;
+            },
+            cancel: function () {
+                this.$Message.info('取消');
+            },
+            add: function () {
+                var that = this;
+                var params = {manager_id: this.manager_id, manager_name: this.manager_name, manager_pwd: this.manager_pwd};
+                if (params.manager_id == null || params.manager_id.replace(/\ +/g, "") == "") {
+                    alert("帐号不能为空或者空格")
+                } else if (params.manager_name == null || params.manager_name.replace(/\ +/g, "") == "") {
+                    alert("用户名不能为空或者空格")
+                } else if (params.manager_pwd == null || params.manager_pwd.replace(/\ +/g, "") == "") {
+                    alert("密码不能为空或者空格")
+                } else {
+                    axios.post("/userCreate", params)
+                        .then(function (resp) {
+                            if (resp.data == "Success") {
+                                app.managers.push(resp.data);
+                                app.created1();
+                                alert("添加信息成功")
+                            } else {
+                                alert("错误：ID重复")
+                            }
+                        })
+                        .catch(function (error) {
+                        })
+                }
+            },
+            update: function (index) {
+                var that = this;
+                var params = {id: this.id, manager_id: this.manager_id, manager_name: this.manager_name, manager_pwd: this.manager_pwd};
+                axios.post("/userUpdate", params)
+                    .then(function (resp) {
+                        if (resp) {
+                            app.managers.splice(index, 1, params);
+                            app.created1();
+                            alert("修改信息成功")
+                        }
+                    }).catch(function (error) {
+                    alert("修改信息失败")
+                })
+
+            },
+            delete: function (index) {
+                this.modal4=true;
+                var s = this.managers[index];
+                app.index1=index;
+                this.manager_id = s.manager_id;
+                this.manager_name = s.manager_name;
+                this.manager_pwd = s.manager_pwd;
+            },
+            delete1: function (index) {
+                var that = this;
+                var params = {manager_id: this.manager_id, manager_name: this.manager_name, manager_pwd: this.manager_pwd};
+                var url = "/userDelete/"+ params.manager_id;
+                axios.post(url).then(function (response) {
+                    app.created1();
+                    alert("删除成功")
+                }).catch(function (error) {
+                    alert("删除失败")
+                });
+                //this.managers.splice(index, 1);
+            },
+            select: function (index) {
+                this.modal2=true;
+                var s = this.managers[index];
+                app.index1=index;
+                this.manager_id = s.manager_id;
+                this.manager_name = s.manager_name;
+                this.manager_pwd = s.manager_pwd;
+            },
+            reset: function (index) {
+                this.modal3 = true;
+                var s = this.managers[index];
+                app.index1=index;
+                this.manager_id = s.manager_id;
+                this.manager_name = s.manager_name;
+                this.manager_pwd = 123;
+            },
+            reset1: function (index) {
+                var that = this;
+                var params = {manager_id: this.manager_id, manager_name: this.manager_name, manager_pwd: this.manager_pwd};
+                axios.post("/userUpdate", params)
+                    .then(function (resp) {
+                        if (resp) {
+                            app.managers.splice(index, 1, params);
+                            app.created1();
+                            alert("重置密码成功")
+                        }
+                    }).catch(function (error) {
+                        alert("重置密码失败")
+                })
+
+            },
+            created1:function() {
+                var that = this;
+                axios.get("/allUser")
+                    .then(function (response) {
+                        if (response) {
+                            that.managers = response.data;
+                        }
+                    })
+                    .catch(function (error) {
+
+                    });
+            },
+            clearCookies:function(){
+                var that=this;
+                axios.post("/clearCookies")
+                    .then(function (response) {
+                        if (response.data == true){
+                            alert("清除session信息，点击确定，返回首页")
+                        } else{
+                            alert("清除session失败")
+                        }
+                    })
+            },
+        },
+        created:function() {
+            var that = this;
+            axios.get("/allUser")
+                .then(function (response) {
+                    if (response) {
+                        that.managers = response.data;
+                    }
+                })
+                .catch(function (error) {
+
+                });
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tre.dao.NavMapper">
+
+    <select id="selectAllNav" resultType="com.tre.entity.Nav">
+        select * from nav
+    </select>
+    <select id="selectNavByName" resultType="com.tre.entity.Nav">
+        select * from nav where nav_name=#{nav_name}
+    </select>
+    <insert id="insertNav" parameterType="com.tre.entity.Nav">
+        insert into nav (nav_id, nav_name, nav_feight)
+          values (#{nav_id},#{nav_name},#{nav_feight})
+    </insert>
+    <update id="updateNav" parameterType="com.tre.entity.Nav">
+        update nav set nav_name=#{nav_name}, nav_feight=#{nav_feight}
+          where nav_id=#{nav_id}
+    </update>
+    <delete id="deleteNav" parameterType="com.tre.entity.Nav">
+        delete from nav where nav_name=#{nav_name}
+    </delete>
+
+</mapper>

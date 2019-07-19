@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tre.dao.UserMapper">
+
+    <select id="selectAllUser" resultType="com.tre.entity.Manager">
+        select * from manager
+    </select>
+    <select id="selectUserBySid" resultType="com.tre.entity.Manager">
+        select * from manager where manager_id=#{manager_id}
+    </select>
+    <insert id="insertUser" parameterType="com.tre.entity.Manager">
+        insert into manager (manager_id, manager_name, manager_pwd)
+          values (#{manager_id},#{manager_name},#{manager_pwd})
+    </insert>
+    <update id="updateUser" parameterType="com.tre.entity.Manager">
+        update manager set manager_name=#{manager_name}, manager_pwd=#{manager_pwd}
+          where manager_id=#{manager_id}
+    </update>
+    <delete id="deleteUser" parameterType="com.tre.entity.Manager">
+        delete from manager where manager_id=#{manager_id}
+    </delete>
+
+</mapper>

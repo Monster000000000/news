@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tre.dao.ArticleMapper">
+
+    <select id="selectAllArticle" resultType="com.tre.entity.Article">
+        select * from article
+    </select>
+    <select id="selectArticleByName" resultType="com.tre.entity.Article">
+        select * from article where article_title=#{article_title}
+    </select>
+    <select id="vagueSelectTitle" resultType="com.tre.entity.Article">
+        select * from article where article_title like '%${article_title}%'
+    </select>
+
+    <insert id="insertArticle" parameterType="com.tre.entity.Article">
+        insert into article (article_id, article_title, article_date, article_content, nav_id)
+          values (#{article_id},#{article_title},#{article_date},#{article_content},#{nav_id})
+    </insert>
+    <update id="updateArticle" parameterType="com.tre.entity.Article">
+        update article set article_title=#{article_title}, article_date=#{article_date}, article_content=#{article_content}, nav_id=#{nav_id}
+          where article_id=#{article_id}
+    </update>
+    <delete id="deleteArticle" parameterType="com.tre.entity.Article">
+        delete from article where article_id=#{article_id}
+    </delete>
+
+</mapper>
