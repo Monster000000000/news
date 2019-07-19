@@ -38,4 +38,9 @@ public class NavServiceImpl implements NavService {
     public Integer deleteNav(String nav_name) {
         return navMapper.deleteNav(nav_name);
     }
+
+    @Override
+    public Nav selectNavById(String nav_id) {
+        return navMapper.selectNavById(nav_id);
+    }
 }

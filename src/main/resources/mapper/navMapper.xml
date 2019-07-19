@@ -9,6 +9,9 @@
     <select id="selectNavByName" resultType="com.tre.entity.Nav">
         select * from nav where nav_name=#{nav_name}
     </select>
+    <select id="selectNavById" resultType="com.tre.entity.Nav">
+        select * from nav where nav_id=#{nav_id}
+    </select>
     <insert id="insertNav" parameterType="com.tre.entity.Nav">
         insert into nav (nav_id, nav_name, nav_feight)
           values (#{nav_id},#{nav_name},#{nav_feight})

@@ -1,7 +1,9 @@
 package com.tre.controller;
 
 import com.tre.entity.Article;
+import com.tre.entity.Nav;
 import com.tre.service.ArticleService;
+import com.tre.service.NavService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,8 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private NavService navService;
 
     //查询全部文章信息
     @GetMapping(value = "/allArticle")
@@ -28,8 +32,14 @@ public class ArticleController {
         if (article1 != null) {
             return ResponseEntity.ok().body("False");
         } else {
-            articleService.createArticle(article);
-            return ResponseEntity.ok().body("Success");
+            Nav nav3 = navService.selectNavById(article.getNav_id());
+            if (nav3 == null) {
+                return ResponseEntity.ok().body("FalseNull");
+            }else {
+                articleService.createArticle(article);
+                return ResponseEntity.ok().body("Success");
+            }
+
         }
 
     }

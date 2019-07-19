@@ -19,4 +19,6 @@ public interface NavMapper {
     Integer updateNav(Nav nav);
 
     Integer deleteNav(String nav_name);
+
+    Nav selectNavById(String nav_id);
 }

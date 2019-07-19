@@ -321,6 +321,8 @@
                                 app.articles.push(resp.data);
                                 app.created1();
                                 alert("添加信息成功")
+                            } else if (resp.data == "FalseNull"){
+                                alert("错误：类别不存在")
                             } else {
                                 alert("错误：ID重复")
                             }
