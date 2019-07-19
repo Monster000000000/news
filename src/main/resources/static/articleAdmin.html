@@ -100,10 +100,11 @@
                     </Sider>
 
                     <i-Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
-                        <div style="font-size: 20px">
-                            <label><i-input v-model="article_title" style="width: 240px" @on-enter="vagueSelect" clearable placeholder="请输入要查询标题..."/></label><br>
-                            <i-button v-on:click="vagueSelect" type="info" style="width:240px; background: #8ce6b0; color: black">点我查询</i-button>
+                        <div style="font-size: 20px" align="left">
+                            <label><i-input v-model="article_title" style="width: 300px" @on-enter="vagueSelect" clearable placeholder="请输入要查询标题..."/></label><br>
+                            <label><i-button v-on:click="vagueSelect" type="info" style="width:300px; background: #8ce6b0; color: black">点我查询</i-button></label>
                         </div>
+                        <br>
                         <i-button type="primary" @click="modal1 = true">添加文章信息</i-button>
                         <Modal v-model="modal1" title="文章信息添加"
                                @on-ok="add" @on-cancel="cancel"
@@ -185,8 +186,10 @@
                             </form>
                             <h1>确认删除这条数据？</h1>
                         </Modal>
-                        <i-table border :columns="arColumns1" :data="articles1"></i-table><br>
+
+                        <i-table border :columns="arColumns1" :data="articles1"></i-table>
                         <i-table border :columns="arColumns" :data="articles"></i-table>
+
                     </i-Content>
                 </Layout>
             </i-Content>
